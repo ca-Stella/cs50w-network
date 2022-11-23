@@ -1,0 +1,18 @@
+.body {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 1rem;
+}
+
+.section {
+  width: 90%;
+  border: 0.2px rgb(186, 186, 186) solid;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+h4 {
+  margin-bottom: 1rem;
+}
