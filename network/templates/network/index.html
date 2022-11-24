@@ -1,15 +1,15 @@
 {% extends "network/layout.html" %}
-
+{% load static %}
 {% block body %}
     {% if user.is_authenticated %}
         <div class="section">
-            <h4>New Post</h4>
-            <form id="new-post">
-                <div class="form-group">
-                    <textarea id="compose-post" cols="5" rows="3" class="form-control"></textarea>
-                </div>
-                <input type="submit" class="btn btn-primary" value="Post" />
+            <form action={% url 'compose' %} method = "GET">
+                <input type="submit" value="Make new post"></input>
             </form>
         </div>
     {% endif %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
 {% endblock %}
