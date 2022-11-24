@@ -1,0 +1,17 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
+    <h3>{{ username }}</h3>
+    {% for post in posts %}
+        <div class="section">
+            <h5><a href="{% url 'user' username %}">{{ username }}</a></h5>
+            <p class="post-content">{{ post.content }}</p>
+            <p class="grey">{{ post.timestamp }}</p>
+            <p class="grey">&#10084;&#65039; {{ post.likes.all.count }}</p>
+        </div>
+    {% endfor %}
+{% endblock %}
+
+{% block script %}
+    <script src="{% static 'network/index.js' %}"></script>
+{% endblock %}

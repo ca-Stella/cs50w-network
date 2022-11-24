@@ -13,20 +13,6 @@ def index(request):
         "posts": posts,
     })
 
-def compose(request):
-    if request.method == "POST":
-        user = User.objects.get(username=request.user)
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post = form.save(commit=False)
-            post.user = user
-            post.save()
-        return HttpResponseRedirect(reverse("index"))
-    else:
-        return render(request, "network/compose.html", {
-            "form": PostForm()
-        })
-
 def login_view(request):
     if request.method == "POST":
 
@@ -77,3 +63,29 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "network/register.html")
+
+def compose(request):
+    if request.method == "POST":
+        user = User.objects.get(username=request.user)
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.user = user
+            post.save()
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "network/compose.html", {
+            "form": PostForm()
+        })
+
+def user(request, username):
+    # Access username
+    user = User.objects.get(username=username)
+
+    # Access all their posts
+    posts = Post.objects.all()
+    userposts = posts.filter(user=user.id)
+    return render(request, "network/user.html", {
+            "username": user.username,
+            "posts": userposts,
+        })
