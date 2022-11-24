@@ -4,7 +4,8 @@
     {% if user.is_authenticated %}
         <div class="section">
             <form action={% url 'compose' %} method = "GET">
-                <input type="submit" value="Make new post"></input>
+                <h4>What's happening?</h4>
+                <input type="submit" value="Make new post" class="btn btn-primary btn-block"></input>
             </form>
         </div>
     {% endif %}
