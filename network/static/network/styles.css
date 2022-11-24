@@ -57,3 +57,12 @@ p {
 .new-post {
   height: 5rem;
 }
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 2rem;
+}

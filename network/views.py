@@ -79,7 +79,10 @@ def compose(request):
         })
 
 def user(request, username):
-    # Access username
+    # Access username of actual user
+    watcher = User.objects.get(username=request.user)
+
+    # Access username of requested page
     user = User.objects.get(username=username)
 
     # Access all their posts
@@ -90,11 +93,21 @@ def user(request, username):
     following = Follow.objects.all().filter(user=user.id).count()
     followed = user.follower.all().count()
 
-    
-
-    return render(request, "network/user.html", {
+    if user == watcher:
+        return render(request, "network/user.html", {
             "username": user.username,
             "posts": userposts,
+            "ownpage": True,
             "following": following,
             "followed": followed
         })
+    else:
+        return render(request, "network/user.html", {
+            "username": user.username,
+            "posts": userposts,
+            "ownpage": False,
+            "following": following,
+            "followed": followed
+        })
+
+    
