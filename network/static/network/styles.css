@@ -3,7 +3,24 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  gap: 1rem;
   margin: 1rem;
+}
+
+.compose-section {
+  width: 90%;
+  border: 0.2px rgb(186, 186, 186) solid;
+  border-radius: 5px;
+  padding: 1rem;
+}
+
+.all-posts {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .section {
@@ -13,8 +30,28 @@
   padding: 1rem;
 }
 
+h3 {
+  margin-bottom: 0rem;
+}
+
 h4 {
   margin-bottom: 1rem;
+}
+
+h5 {
+  margin-bottom: 0.6rem;
+}
+
+p {
+  margin-bottom: 0.2rem;
+}
+
+.post-content {
+  margin-bottom: 0.6rem;
+}
+
+.grey {
+  color: rgb(96, 96, 96);
 }
 
 .new-post {
