@@ -5,6 +5,13 @@ from django.forms import ModelForm, Textarea
 class User(AbstractUser):
     pass
 
+class Follow(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name = "follower")
+    followed = models.ManyToManyField("User", default=None, blank=True, related_name = "following")
+
+    def __str__(self):
+        return f'{self.user} follows {self.followed}'
+
 class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name ="posts")
     content = models.TextField(max_length=255)

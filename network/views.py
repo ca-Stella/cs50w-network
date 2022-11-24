@@ -5,10 +5,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Post, PostForm
+from .models import User, Post, PostForm, Follow
 
 def index(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('timestamp').reverse()
     return render(request, "network/index.html", {
         "posts": posts,
     })
@@ -84,8 +84,17 @@ def user(request, username):
 
     # Access all their posts
     posts = Post.objects.all()
-    userposts = posts.filter(user=user.id)
+    userposts = posts.filter(user=user.id).order_by('timestamp').reverse()
+
+    # See following/follower count
+    following = Follow.objects.all().filter(user=user.id).count()
+    followed = user.follower.all().count()
+
+    
+
     return render(request, "network/user.html", {
             "username": user.username,
             "posts": userposts,
+            "following": following,
+            "followed": followed
         })
