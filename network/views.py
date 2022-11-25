@@ -94,33 +94,22 @@ def user(request, username):
     followed = user.follower.all()
     followedCount = followed.count()
 
+    # Initialize values for rendering
+    ownPage = False
+    isFollowing = False
+
     # If user is watcher, then label as so
     if user == watcher:
-        return render(request, "network/user.html", {
-            "username": user.username,
-            "posts": userposts,
-            "ownpage": True,
-            "isfollowing": False,
-            "following": followingCount,
-            "followed": followedCount
-        })
+        ownPage = True
     # Else, if follower is checking, label as so
     elif followed.filter(user=watcher).exists():
-        return render(request, "network/user.html", {
-            "username": user.username,
-            "posts": userposts,
-            "ownpage": False,
-            "isfollowing": True,
-            "following": followingCount,
-            "followed": followedCount
-        })
-    # Else, non-follower is checking
-    else:
-        return render(request, "network/user.html", {
-            "username": user.username,
-            "posts": userposts,
-            "ownpage": False,
-            "isfollowing": False,
-            "following": followingCount,
-            "followed": followedCount
-        })
+        isFollowing = True
+
+    return render(request, "network/user.html", {
+        "username": user.username,
+        "posts": userposts,
+        "ownpage": ownPage,
+        "isfollowing": isFollowing,
+        "following": followingCount,
+        "followed": followedCount
+    })
