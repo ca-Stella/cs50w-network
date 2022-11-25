@@ -4,11 +4,14 @@
     <h3>{{ username }}</h3>
     {% if not ownpage %}
         <div class="follow-block">
-            {% if isfollowing %}
-                <button id="follow-btn" class="btn btn-secondary btn-block">Un-follow</button>
-            {% else %}
-                <button id="follow-btn" class="btn btn-primary btn-block">Follow</button>
-            {% endif %}
+            <form action="{% url 'user' username %}" method = "post">
+                {% csrf_token %}
+                {% if isfollowing %}
+                    <input type="submit" id="follow-btn" class="btn btn-secondary btn-block" name="unfollow" value="Un-follow">
+                {% else %}
+                    <input type="submit" id="follow-btn" class="btn btn-primary btn-block" name="follow" value="Follow">
+                {% endif %}
+            </form>
         </div>
     {% endif %}
     <div class="user-info">
@@ -17,8 +20,8 @@
             <p>{{ following }}</p>
         </div>
         <div class="section">
-            <h6>Followed</h6>
-            <p>{{ followed }}</p>
+            <h6>Follower</h6>
+            <p>{{ follower }}</p>
         </div>
     </div>
     {% for post in posts %}

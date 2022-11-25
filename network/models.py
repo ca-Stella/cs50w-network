@@ -6,17 +6,17 @@ class User(AbstractUser):
     pass
 
 class Follow(models.Model):
-    user = models.ForeignKey("User", on_delete=models.CASCADE, related_name = "follower")
-    followed = models.ManyToManyField("User", default=None, blank=True, related_name = "following")
+    following = models.ForeignKey("User", on_delete=models.CASCADE, related_name = "following")
+    followed = models.ForeignKey("User", on_delete=models.CASCADE, related_name = "followed")
 
     def __str__(self):
-        return f'{self.user} follows {self.followed}'
+        return f'{self.following} follows {self.followed}'
 
 class Post(models.Model):
     user = models.ForeignKey("User", on_delete=models.CASCADE, related_name ="posts")
     content = models.TextField(max_length=255)
     timestamp = models.DateTimeField(auto_now_add=True)
-    likes = models.ManyToManyField("User", default=None, blank=True, related_name="liked")
+    likes = models.ManyToManyField("User", blank=True, related_name="liked")
 
     def __str__(self):
         return f'{self.user} posted "{self.content}"'

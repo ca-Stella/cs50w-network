@@ -88,28 +88,48 @@ def user(request, username):
     # Access all their posts
     posts = Post.objects.all()
     userposts = posts.filter(user=user.id).order_by('timestamp').reverse()
-
     # See following/follower count
-    followingCount = Follow.objects.all().filter(user=user.id).count()
-    followed = user.follower.all()
-    followedCount = followed.count()
+    followingCount = user.following.all().count()
+    followedCount = user.followed.all().count()
+    followLink = Follow.objects.filter(following = watcher, followed = user)
 
     # Initialize values for rendering
     ownPage = False
-    isFollowing = False
+    isFollowing = False  
 
-    # If user is watcher, then label as so
-    if user == watcher:
-        ownPage = True
-    # Else, if follower is checking, label as so
-    elif followed.filter(user=watcher).exists():
-        isFollowing = True
+    # If request method is not POST
+    if request.method != "POST":
 
-    return render(request, "network/user.html", {
-        "username": user.username,
-        "posts": userposts,
-        "ownpage": ownPage,
-        "isfollowing": isFollowing,
-        "following": followingCount,
-        "followed": followedCount
-    })
+        # If user is watcher, then label as so
+        if user == watcher:
+            ownPage = True
+        
+        # Else if follower is checking, label as so
+        elif followLink.exists():
+            isFollowing = True
+
+        return render(request, "network/user.html", {
+            "username": user.username,
+            "posts": userposts,
+            "ownpage": ownPage,
+            "isfollowing": isFollowing,
+            "following": followingCount,
+            "follower": followedCount
+        })
+
+    # Else if request method is POST
+    if request.method == "POST":
+        # If follow or unfollow button is pressed
+        if 'follow' or 'unfollow' in request.POST:
+            # If follower, un-follow
+            if followLink.exists():
+                followLink.delete()
+            # Else, add to following list
+            else:
+                watcherFollow = Follow()
+                watcherFollow.following = watcher
+                watcherFollow.followed = user
+                watcherFollow.save()
+        return HttpResponseRedirect(reverse("user", kwargs={
+            "username": username,
+        }))
