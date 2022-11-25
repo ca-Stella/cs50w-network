@@ -90,24 +90,37 @@ def user(request, username):
     userposts = posts.filter(user=user.id).order_by('timestamp').reverse()
 
     # See following/follower count
-    following = Follow.objects.all().filter(user=user.id).count()
-    followed = user.follower.all().count()
+    followingCount = Follow.objects.all().filter(user=user.id).count()
+    followed = user.follower.all()
+    followedCount = followed.count()
 
+    # If user is watcher, then label as so
     if user == watcher:
         return render(request, "network/user.html", {
             "username": user.username,
             "posts": userposts,
             "ownpage": True,
-            "following": following,
-            "followed": followed
+            "isfollowing": False,
+            "following": followingCount,
+            "followed": followedCount
         })
+    # Else, if follower is checking, label as so
+    elif followed.filter(user=watcher).exists():
+        return render(request, "network/user.html", {
+            "username": user.username,
+            "posts": userposts,
+            "ownpage": False,
+            "isfollowing": True,
+            "following": followingCount,
+            "followed": followedCount
+        })
+    # Else, non-follower is checking
     else:
         return render(request, "network/user.html", {
             "username": user.username,
             "posts": userposts,
             "ownpage": False,
-            "following": following,
-            "followed": followed
+            "isfollowing": False,
+            "following": followingCount,
+            "followed": followedCount
         })
-
-    

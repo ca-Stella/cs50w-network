@@ -4,7 +4,11 @@
     <h3>{{ username }}</h3>
     {% if not ownpage %}
         <div class="follow-block">
-            <button class="btn btn-primary btn-block">Follow</button>
+            {% if isfollowing %}
+                <button id="follow-btn" class="btn btn-secondary btn-block">Un-follow</button>
+            {% else %}
+                <button id="follow-btn" class="btn btn-primary btn-block">Follow</button>
+            {% endif %}
         </div>
     {% endif %}
     <div class="user-info">
