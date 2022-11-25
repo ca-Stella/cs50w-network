@@ -8,6 +8,7 @@ from django.urls import reverse
 from .models import User, Post, PostForm, Follow
 
 def index(request):
+    # Retrieve all posts in reverse chronological order
     posts = Post.objects.all().order_by('timestamp').reverse()
     return render(request, "network/index.html", {
         "posts": posts,
@@ -37,7 +38,6 @@ def logout_view(request):
     logout(request)
     return HttpResponseRedirect(reverse("index"))
 
-
 def register(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -65,6 +65,7 @@ def register(request):
         return render(request, "network/register.html")
 
 def compose(request):
+    # If posting, then redirect to index after saving post
     if request.method == "POST":
         user = User.objects.get(username=request.user)
         form = PostForm(request.POST)
@@ -97,27 +98,7 @@ def user(request, username):
     ownPage = False
     isFollowing = False  
 
-    # If request method is not POST
-    if request.method != "POST":
-
-        # If user is watcher, then label as so
-        if user == watcher:
-            ownPage = True
-        
-        # Else if follower is checking, label as so
-        elif followLink.exists():
-            isFollowing = True
-
-        return render(request, "network/user.html", {
-            "username": user.username,
-            "posts": userposts,
-            "ownpage": ownPage,
-            "isfollowing": isFollowing,
-            "following": followingCount,
-            "follower": followedCount
-        })
-
-    # Else if request method is POST
+    # If request method is POST
     if request.method == "POST":
         # If follow or unfollow button is pressed
         if 'follow' or 'unfollow' in request.POST:
@@ -133,3 +114,20 @@ def user(request, username):
         return HttpResponseRedirect(reverse("user", kwargs={
             "username": username,
         }))
+    
+    # If user is watcher, then label as so
+    if user == watcher:
+        ownPage = True
+    
+    # Else if follower is checking, label as so
+    elif followLink.exists():
+        isFollowing = True
+
+    return render(request, "network/user.html", {
+        "username": user.username,
+        "posts": userposts,
+        "ownpage": ownPage,
+        "isfollowing": isFollowing,
+        "following": followingCount,
+        "follower": followedCount
+    })

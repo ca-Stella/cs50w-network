@@ -2,6 +2,17 @@
 {% load static %}
 {% block body %}
     <h3>{{ username }}</h3>
+    <div class="user-info">
+        <div class="section">
+            <h6>Following</h6>
+            <p>{{ following }}</p>
+        </div>
+        <div class="section">
+            <h6>Follower</h6>
+            <p>{{ follower }}</p>
+        </div>
+    </div>
+    
     {% if not ownpage %}
         <div class="follow-block">
             <form action="{% url 'user' username %}" method = "post">
@@ -14,16 +25,7 @@
             </form>
         </div>
     {% endif %}
-    <div class="user-info">
-        <div class="section">
-            <h6>Following</h6>
-            <p>{{ following }}</p>
-        </div>
-        <div class="section">
-            <h6>Follower</h6>
-            <p>{{ follower }}</p>
-        </div>
-    </div>
+
     {% for post in posts %}
         <div class="section">
             <h5><a href="{% url 'user' username %}">{{ username }}</a></h5>
