@@ -1,0 +1,15 @@
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
+    <div class="all-posts">
+        <h3>Following</h3>
+        {% for post in followposts %}
+            <div class="section">
+                <h5><a href="{% url 'user' post.user %}">{{ post.user }}</a></h5>
+                <p class="post-content">{{ post.content }}</p>
+                <p class="grey">{{ post.timestamp }}</p>
+                <p class="grey">&#10084;&#65039; {{ post.likes.all.count }}</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -131,3 +131,16 @@ def user(request, username):
         "following": followingCount,
         "follower": followedCount
     })
+
+def following(request):
+    # Access username of actual user
+    watcher = User.objects.get(username=request.user)
+    followall = watcher.following.all()
+    following = [f.followed for f in followall]
+
+    # Access all posts from following users
+    followposts = Post.objects.filter(user__in=following).order_by('timestamp').reverse()
+
+    return render(request, "network/following.html", {
+        "followposts": followposts,
+    })
