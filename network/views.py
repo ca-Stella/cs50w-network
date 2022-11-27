@@ -5,14 +5,19 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 
 from .models import User, Post, PostForm, Follow
 
 def index(request):
     # Retrieve all posts in reverse chronological order
     posts = Post.objects.all().order_by('timestamp').reverse()
+    paginator = Paginator(posts, 10)
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
+
     return render(request, "network/index.html", {
-        "posts": posts,
+        'page_obj': page_obj,
     })
 
 def login_view(request):
