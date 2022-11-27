@@ -4,6 +4,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 
 from .models import User, Post, PostForm, Follow
 
@@ -132,9 +133,12 @@ def user(request, username):
         "follower": followedCount
     })
 
+@login_required(login_url='/login')
 def following(request):
-    # Access username of actual user
+    # Access username of actual user i.e. watcher
     watcher = User.objects.get(username=request.user)
+    
+    # Get a list of users followed by watcher
     followall = watcher.following.all()
     following = [f.followed for f in followall]
 
