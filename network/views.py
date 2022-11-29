@@ -10,6 +10,9 @@ from django.core.paginator import Paginator
 from .models import User, Post, PostForm, Follow
 
 def index(request):
+    # Get user information
+    user = User.objects.get(username=request.user)
+
     # Retrieve all posts in reverse chronological order
     posts = Post.objects.all().order_by('timestamp').reverse()
 
@@ -19,7 +22,8 @@ def index(request):
     page_obj = paginator.get_page(page_num)
 
     return render(request, "network/index.html", {
-        'page_obj': page_obj,
+        "page_obj": page_obj,
+        "user": user,
     })
 
 def login_view(request):
