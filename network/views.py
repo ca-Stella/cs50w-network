@@ -131,9 +131,14 @@ def user(request, username):
     elif followLink.exists():
         isFollowing = True
 
+    # Add paginator
+    paginator = Paginator(userposts, 10)
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
+
     return render(request, "network/user.html", {
         "username": user.username,
-        "posts": userposts,
+        "page_obj": page_obj,
         "ownpage": ownPage,
         "isfollowing": isFollowing,
         "following": followingCount,
