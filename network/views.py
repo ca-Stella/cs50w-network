@@ -12,6 +12,8 @@ from .models import User, Post, PostForm, Follow
 def index(request):
     # Retrieve all posts in reverse chronological order
     posts = Post.objects.all().order_by('timestamp').reverse()
+
+    # Add paginator
     paginator = Paginator(posts, 10)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
@@ -150,6 +152,12 @@ def following(request):
     # Access all posts from following users
     followposts = Post.objects.filter(user__in=following).order_by('timestamp').reverse()
 
+    
+    # Add paginator
+    paginator = Paginator(followposts, 10)
+    page_num = request.GET.get('page')
+    page_obj = paginator.get_page(page_num)
+
     return render(request, "network/following.html", {
-        "followposts": followposts,
+        "page_obj": page_obj,
     })
