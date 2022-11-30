@@ -66,3 +66,13 @@ p {
   text-align: center;
   gap: 2rem;
 }
+
+.edit-block {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.edit-btn {
+  width: 15%;
+}

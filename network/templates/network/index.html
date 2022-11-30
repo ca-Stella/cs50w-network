@@ -15,7 +15,9 @@
             <div class="section" id="{{ post.id }}">
                 <h5><a href="{% url 'user' post.user %}">{{ post.user }}</a></h5>
                 {% if user.username == post.user.username %}
-                    <button class="edit-btn">Edit</button>
+                    <div class="edit-block">
+                        <button class="edit-btn {{ post.id }}">Edit</button>
+                    </div>
                 {% endif %}
                 <p class="post-content">{{ post.content }}</p>
                 <p class="grey">{{ post.timestamp }}</p>
