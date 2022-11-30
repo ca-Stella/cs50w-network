@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 
 from .models import User, Post, PostForm, Follow
 
@@ -170,3 +171,29 @@ def following(request):
     return render(request, "network/following.html", {
         "page_obj": page_obj,
     })
+
+@login_required(login_url="/login")
+def edit(request, post_id):
+
+    # Query for requested post
+    try: 
+        post = Post.objects.get(pk=post_id) 
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Posst not found."}, status=404)
+
+    # Return post contents
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
+    
+    # Update post if post is submitted
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        post.content = data["content"]
+        post.save()
+        return HttpResponse(status=204)
+    
+    # Post must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)

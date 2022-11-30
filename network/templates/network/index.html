@@ -15,11 +15,15 @@
             <div class="section" id="{{ post.id }}">
                 <h5><a href="{% url 'user' post.user %}">{{ post.user }}</a></h5>
                 {% if user.username == post.user.username %}
-                    <div class="edit-block">
+                    <div>
                         <button class="edit-btn {{ post.id }}">Edit</button>
                     </div>
+                    <div class="edit-block" id="edit-block-{{ post.id }}" style="display:none;">
+                        <textarea name="edit-txt" id="edit-{{ post.id }}"></textarea>
+                        <button class="save-btn" id="save-{{ post.id }}">Save</button>
+                    </div>
                 {% endif %}
-                <p class="post-content">{{ post.content }}</p>
+                <p class="post-content" id="post-content-{{ post.id }}">{{ post.content }}</p>
                 <p class="grey">{{ post.timestamp }}</p>
                 <p class="grey">&#10084;&#65039; {{ post.likes.all.count }}</p>
             </div>
