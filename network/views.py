@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 from .models import User, Post, PostForm, Follow
 
@@ -172,6 +173,7 @@ def following(request):
         "page_obj": page_obj,
     })
 
+@csrf_exempt
 @login_required(login_url="/login")
 def edit(request, post_id):
 
@@ -179,7 +181,7 @@ def edit(request, post_id):
     try: 
         post = Post.objects.get(pk=post_id) 
     except Post.DoesNotExist:
-        return JsonResponse({"error": "Posst not found."}, status=404)
+        return JsonResponse({"error": "Post not found."}, status=404)
 
     # Return post contents
     if request.method == "GET":
