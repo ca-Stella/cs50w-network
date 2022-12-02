@@ -199,3 +199,31 @@ def edit(request, post_id):
         return JsonResponse({
             "error": "GET or PUT request required."
         }, status=400)
+
+
+@csrf_exempt
+@login_required(login_url="/login")
+def like(request, post_id):
+
+    # Query for requested post
+    try: 
+        post = Post.objects.get(pk=post_id) 
+    except Post.DoesNotExist:
+        return JsonResponse({"error": "Post not found."}, status=404)
+
+    # Return post contents
+    if request.method == "GET":
+        return JsonResponse(post.serialize())
+    
+    # Update post if post is submitted
+    elif request.method == "PUT":
+        data = json.loads(request.body)
+        post.content = data["content"]
+        post.save()
+        return HttpResponse(status=204)
+    
+    # Post must be via GET or PUT
+    else:
+        return JsonResponse({
+            "error": "GET or PUT request required."
+        }, status=400)

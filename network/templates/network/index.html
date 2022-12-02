@@ -25,7 +25,7 @@
                 {% endif %}
                 <p class="post-content" id="post-content-{{ post.id }}">{{ post.content }}</p>
                 <p class="grey">{{ post.timestamp }}</p>
-                <p class="grey">&#10084;&#65039; {{ post.likes.all.count }}</p>
+                <button class="grey btn btn-outline-danger btn-sm">&#10084;&#65039; {{ post.likes.all.count }}</p>
             </div>
         {% endfor %}
     </div>
