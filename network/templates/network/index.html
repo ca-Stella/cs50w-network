@@ -16,11 +16,11 @@
                 <h5><a href="{% url 'user' post.user %}">{{ post.user }}</a></h5>
                 {% if user.username == post.user.username %}
                     <div>
-                        <button class="edit-btn {{ post.id }}">Edit</button>
+                        <button class="edit-btn {{ post.id }} btn btn-outline-info btn-sm">Edit</button>
                     </div>
                     <div class="edit-block" id="edit-block-{{ post.id }}" style="display:none;">
-                        <textarea name="edit-txt" id="edit-{{ post.id }}"></textarea>
-                        <button class="save-btn {{ post.id }}" id="save-{{ post.id }}">Save</button>
+                        <textarea name="edit-txt" id="edit-{{ post.id }}" class="form-control"></textarea>
+                        <button class="save-btn {{ post.id }} btn btn-primary" id="save-{{ post.id }}">Save</button>
                     </div>
                 {% endif %}
                 <p class="post-content" id="post-content-{{ post.id }}">{{ post.content }}</p>
