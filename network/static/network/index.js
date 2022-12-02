@@ -47,17 +47,20 @@ function updatePost() {
 
 function likePost() {
     const postid = this.classList[1];
+    const currentUser = document.querySelector('#current-user').innerHTML;
     console.log(postid);
 
-    // Get data from post
-    fetch(`/like/${postid}`)
+    fetch(`/like/${postid}`, {
+        method: 'PUT',
+        body: JSON.stringify({
+            postid: postid,
+        })
+    })
     .then(response => response.json())
-    .then(post => {
-        // Print post
-        console.log(post);
-        console.log('done');
-    });
-
+    .then(result => {
+        const likeBtn = document.querySelector(`#like-${postid}`);
+        likeBtn.innerHTML = result['likeCount'];
+    })
 }
 
 

@@ -12,9 +12,6 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import User, Post, PostForm, Follow
 
 def index(request):
-    # Get user information
-    user = User.objects.get(username=request.user)
-
     # Retrieve all posts in reverse chronological order
     posts = Post.objects.all().order_by('timestamp').reverse()
 
@@ -22,6 +19,14 @@ def index(request):
     paginator = Paginator(posts, 10)
     page_num = request.GET.get('page')
     page_obj = paginator.get_page(page_num)
+
+    # Get user information
+    try: 
+        user = User.objects.get(username=request.user)
+    except User.DoesNotExist:
+        return render(request, "network/index.html", {
+            "page_obj": page_obj,
+        })
 
     return render(request, "network/index.html", {
         "page_obj": page_obj,
@@ -210,18 +215,19 @@ def like(request, post_id):
         post = Post.objects.get(pk=post_id) 
     except Post.DoesNotExist:
         return JsonResponse({"error": "Post not found."}, status=404)
-
-    # Return post contents
-    if request.method == "GET":
-        return JsonResponse(post.serialize())
     
     # Update post if post is submitted
-    elif request.method == "PUT":
-        data = json.loads(request.body)
+    if request.method == "PUT":
         user = User.objects.get(username=request.user)
-        post.likes.add(user)
+        data = json.loads(request.body)
+        if user in post.likes.all():
+            post.likes.remove(user)
+            alreadyLiked = True
+        else:
+            post.likes.add(user)
+            alreadyLiked = False
         post.save()
-        return HttpResponse(status=204)
+        return JsonResponse({'status': 201, 'alreadyLiked': alreadyLiked, 'likeCount': post.likes.count()})
     
     # Post must be via GET or PUT
     else:

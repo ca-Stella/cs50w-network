@@ -77,3 +77,8 @@ p {
   width: 15%;
   margin-bottom: 0.5rem;
 }
+
+.like-btn {
+  display: flex;
+  gap: 0.3rem;
+}
