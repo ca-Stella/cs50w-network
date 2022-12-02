@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const editBtns = document.querySelectorAll('.edit-btn');
+    const likeBtns = document.querySelectorAll('.like-btn');
+
     editBtns.forEach(editBtn => {
         editBtn.addEventListener('click', editPost);
     });
-
+    likeBtns.forEach(likeBtn => {
+        likeBtn.addEventListener('click', likePost);
+    });
 })
 
 function editPost() {
@@ -38,4 +42,22 @@ function updatePost() {
         document.querySelector(`#post-content-${postid}`).innerHTML = editContent;
     })
 }
+
+
+
+function likePost() {
+    const postid = this.classList[1];
+    console.log(postid);
+
+    // Get data from post
+    fetch(`/like/${postid}`)
+    .then(response => response.json())
+    .then(post => {
+        // Print post
+        console.log(post);
+        console.log('done');
+    });
+
+}
+
 

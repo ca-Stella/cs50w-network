@@ -218,7 +218,8 @@ def like(request, post_id):
     # Update post if post is submitted
     elif request.method == "PUT":
         data = json.loads(request.body)
-        post.content = data["content"]
+        user = User.objects.get(username=request.user)
+        post.likes.add(user)
         post.save()
         return HttpResponse(status=204)
     

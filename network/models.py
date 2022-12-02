@@ -21,6 +21,14 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.user} posted "{self.content}"'
 
+    def serialize(self):
+        return {
+            "user": self.user.username,
+            "content": self.content,
+            "timestamp": self.timestamp.strftime("%b %d %Y, %I:%M %p"),
+            "likes": [user.username for user in self.likes.all()]
+        }
+
 class PostForm(ModelForm):
     class Meta:
         model = Post
