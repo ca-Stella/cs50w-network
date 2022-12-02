@@ -29,7 +29,16 @@
     {% for post in page_obj %}
         <div class="section">
             <h5><a href="{% url 'user' username %}">{{ username }}</a></h5>
-            <p class="post-content">{{ post.content }}</p>
+            {% if user.username == post.user.username %}
+                <div>
+                    <button class="edit-btn {{ post.id }} btn btn-outline-info btn-sm">Edit</button>
+                </div>
+                <div class="edit-block" id="edit-block-{{ post.id }}" style="display:none;">
+                    <textarea name="edit-txt" id="edit-{{ post.id }}" class="form-control"></textarea>
+                    <button class="save-btn {{ post.id }} btn btn-primary" id="save-{{ post.id }}">Save</button>
+                </div>
+            {% endif %}
+            <p class="post-content" id="post-content-{{ post.id }}">{{ post.content }}</p>
             <p class="grey">{{ post.timestamp }}</p>
             <p class="grey">&#10084;&#65039; {{ post.likes.all.count }}</p>
         </div>
