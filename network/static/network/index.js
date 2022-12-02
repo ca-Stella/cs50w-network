@@ -8,6 +8,8 @@ document.addEventListener('DOMContentLoaded', function() {
     likeBtns.forEach(likeBtn => {
         likeBtn.addEventListener('click', likePost);
     });
+
+    loadLikes();
 })
 
 function editPost() {
@@ -43,8 +45,6 @@ function updatePost() {
     })
 }
 
-
-
 function likePost() {
     const postid = this.classList[1];
     const currentUser = document.querySelector('#current-user').innerHTML;
@@ -58,9 +58,34 @@ function likePost() {
     })
     .then(response => response.json())
     .then(result => {
-        const likeBtn = document.querySelector(`#like-${postid}`);
-        likeBtn.innerHTML = result['likeCount'];
+        const likeBtnTxt = document.querySelector(`#like-${postid}`);
+        const likeBtn = document.querySelector(`#like-btn-${postid}`);
+        likeBtnTxt.innerHTML = result['likeCount'];
+        if (result['alreadyLiked']) {
+            likeBtn.style.backgroundColor = '#fecdcd';
+        } else {
+            likeBtn.style.backgroundColor = 'white';
+        }
     })
 }
 
 
+function loadLikes() {
+    const allLikeBtns = document.querySelectorAll('.like-btn');
+
+    allLikeBtns.forEach(likeBtn => {
+        const postid = likeBtn.classList[1];
+        fetch(`/like/${postid}`)
+        .then(response => response.json())
+        .then(result => {
+            const likeBtnTxt = document.querySelector(`#like-${postid}`);
+            const likeBtn = document.querySelector(`#like-btn-${postid}`);
+            likeBtnTxt.innerHTML = result['likeCount'];
+            if (result['alreadyLiked']) {
+                likeBtn.style.backgroundColor = '#fecdcd';
+            } else {
+                likeBtn.style.backgroundColor = 'white';
+            }
+        })
+    })
+}

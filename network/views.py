@@ -222,13 +222,22 @@ def like(request, post_id):
         data = json.loads(request.body)
         if user in post.likes.all():
             post.likes.remove(user)
-            alreadyLiked = True
+            alreadyLiked = False
         else:
             post.likes.add(user)
-            alreadyLiked = False
+            alreadyLiked = True
         post.save()
         return JsonResponse({'status': 201, 'alreadyLiked': alreadyLiked, 'likeCount': post.likes.count()})
     
+    elif request.method == "GET":
+        user = User.objects.get(username=request.user)
+        if user in post.likes.all():
+            alreadyLiked = True
+        else:
+            alreadyLiked = False
+        post.save()
+        return JsonResponse({'status': 204, 'alreadyLiked': alreadyLiked, 'likeCount': post.likes.count()})
+        
     # Post must be via GET or PUT
     else:
         return JsonResponse({
