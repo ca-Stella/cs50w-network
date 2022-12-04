@@ -62,7 +62,7 @@ function likePost() {
         const likeBtn = document.querySelector(`#like-btn-${postid}`);
         likeBtnTxt.innerHTML = result['likeCount'];
         if (result['alreadyLiked']) {
-            likeBtn.style.backgroundColor = '#fecdcd';
+            likeBtn.style.backgroundColor = '#fee6e6';
         } else {
             likeBtn.style.backgroundColor = 'white';
         }
@@ -82,7 +82,7 @@ function loadLikes() {
             const likeBtn = document.querySelector(`#like-btn-${postid}`);
             likeBtnTxt.innerHTML = result['likeCount'];
             if (result['alreadyLiked']) {
-                likeBtn.style.backgroundColor = '#fecdcd';
+                likeBtn.style.backgroundColor = '#fee6e6';
             } else {
                 likeBtn.style.backgroundColor = 'white';
             }
