@@ -4,6 +4,8 @@
 
 This is a twitter-like network webpage created as part of The CS50's Web Programming with Python and JavaScript course.  
 
+[📹 Youtube demo](https://youtu.be/0Db02DjC_XM)
+
 ## Outcomes
 - Design a networking page that uses Python, JavaScript, HTML, and CSS
 - Implemented API calls using fetch to asynchronously update values
